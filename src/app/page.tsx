@@ -3,15 +3,18 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import ProductCard from '@/components/ProductCard'
+import { Product } from '@/types/product'
 
-const featuredProducts = [
+const featuredProducts: Product[] = [
   {
     id: '1',
     name: 'Strawberry Dreams',
     price: 12.99,
     image: '/images/product1.jpg',
     description: 'Sweet strawberry flavor with a subtle shimmer',
-    badge: 'Popular',
+    category: 'Fruity',
+    tags: ['bestseller', 'shimmer'],
   },
   {
     id: '2',
@@ -19,7 +22,8 @@ const featuredProducts = [
     price: 12.99,
     image: '/images/product2.jpg',
     description: 'Bubblegum scent with holographic glitter',
-    badge: 'New',
+    category: 'Sweet',
+    tags: ['new', 'glitter'],
   },
   {
     id: '3',
@@ -27,7 +31,8 @@ const featuredProducts = [
     price: 12.99,
     image: '/images/product3.jpg',
     description: 'Cotton candy flavor with rainbow sparkles',
-    badge: 'Bestseller',
+    category: 'Sweet',
+    tags: ['bestseller', 'sparkle'],
   },
 ]
 
@@ -68,7 +73,7 @@ export default function Home() {
   return (
     <div className="space-y-24">
       {/* Hero Section */}
-      <section className="relative h-[600px] md:h-[700px] flex items-center justify-center overflow-hidden rounded-3xl">
+      <section className="relative h-[500px] md:h-[700px] flex items-center justify-center overflow-hidden rounded-3xl">
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/hero-bg.jpg"
@@ -85,7 +90,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="font-heading text-5xl md:text-7xl font-bold mb-6 leading-tight"
+            className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight"
           >
             Express Yourself with <span className="text-secondary">Gloss & Glam</span>
           </motion.h1>
@@ -140,42 +145,8 @@ export default function Home() {
           <p>Discover our most popular products loved by teens everywhere</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="product-card relative"
-            >
-              <div className="product-image-container">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="product-image"
-                />
-                {product.badge && (
-                  <span className="absolute top-3 left-3 bg-primary-dark text-white text-xs font-bold px-3 py-1 rounded-full">
-                    {product.badge}
-                  </span>
-                )}
-              </div>
-              <h3 className="text-xl font-bold mb-2">{product.name}</h3>
-              <p className="text-gray-600 mb-4">{product.description}</p>
-              <div className="flex justify-between items-center">
-                <span className="text-xl font-bold text-primary-dark">
-                  ${product.price}
-                </span>
-                <Link
-                  href={`/products/${product.id}`}
-                  className="btn-secondary px-4 py-2 text-sm"
-                >
-                  View Details
-                </Link>
-              </div>
-            </motion.div>
+          {featuredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
         <div className="text-center mt-10">

@@ -1,11 +1,10 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import { FunnelIcon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { Product } from '@/types/product'
+import ProductCard from '@/components/ProductCard'
 
 const products: Product[] = [
   {
@@ -327,46 +326,8 @@ export default function ProductsPage() {
           ) : (
             <>
               <div className="product-grid">
-                {filteredProducts.map((product, index) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="product-card"
-                  >
-                    <div className="product-image-container">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="product-image"
-                      />
-                      {product.tags.includes('bestseller') && (
-                        <span className="absolute top-3 left-3 bg-primary-dark text-white text-xs font-bold px-3 py-1 rounded-full">
-                          Bestseller
-                        </span>
-                      )}
-                      {product.tags.includes('new') && (
-                        <span className="absolute top-3 left-3 bg-accent-dark text-white text-xs font-bold px-3 py-1 rounded-full">
-                          New
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-lg font-bold mt-4 mb-1">{product.name}</h3>
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-lg font-bold text-primary-dark">
-                        ${product.price.toFixed(2)}
-                      </span>
-                      <Link
-                        href={`/products/${product.id}`}
-                        className="btn-secondary text-sm px-4 py-2"
-                      >
-                        View Details
-                      </Link>
-                    </div>
-                  </motion.div>
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
               <div className="mt-8 text-center text-gray-600">

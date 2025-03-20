@@ -3,15 +3,15 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ShoppingBagIcon, UserIcon, Bars3Icon, XMarkIcon, HeartIcon } from '@heroicons/react/24/outline'
+import { ShoppingBagIcon, UserIcon, HeartIcon } from '@heroicons/react/24/outline'
 import { useCartStore } from '@/store/cartStore'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { CartState, CartItem } from '@/types/cart'
 
 const Navbar = () => {
   const pathname = usePathname()
-  const cartItems = useCartStore((state) => state.items)
-  const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const cartItems = useCartStore((state: CartState) => state.items)
+  const itemCount = cartItems.reduce((total: number, item: CartItem) => total + item.quantity, 0)
   const [isScrolled, setIsScrolled] = useState(false)
 
   // Handle scroll effect
@@ -59,9 +59,9 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Actions (Cart, Account) */}
-          <div className="flex items-center space-x-6">
-            <Link href="/wishlist" className="hidden sm:flex relative hover:text-primary-dark">
+          {/* Actions (Cart, Account) - Hide on mobile as we have the bottom nav now */}
+          <div className="hidden md:flex items-center space-x-6">
+            <Link href="/wishlist" className="relative hover:text-primary-dark">
               <HeartIcon className="h-6 w-6 transition-colors" />
             </Link>
             
@@ -81,55 +81,9 @@ const Navbar = () => {
             <Link href="/login">
               <UserIcon className="h-6 w-6 text-gray-700 transition-colors hover:text-primary-dark" />
             </Link>
-
-            {/* Mobile menu button */}
-            <button 
-              className="md:hidden focus:outline-none" 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? (
-                <XMarkIcon className="h-6 w-6 text-gray-700" />
-              ) : (
-                <Bars3Icon className="h-6 w-6 text-gray-700" />
-              )}
-            </button>
           </div>
         </div>
       </div>
-
-      {/* Mobile Navigation Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden overflow-hidden"
-          >
-            <div className="container-custom py-4 flex flex-col space-y-3 border-t mt-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`py-2 px-4 rounded-lg ${pathname === link.href ? 'bg-primary/10 text-primary-dark font-medium' : 'text-gray-700'}`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Link
-                href="/wishlist"
-                className="py-2 px-4 rounded-lg text-gray-700 flex items-center space-x-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <HeartIcon className="h-5 w-5" />
-                <span>Wishlist</span>
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
   )
 }

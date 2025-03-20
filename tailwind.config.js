@@ -8,31 +8,34 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#FF69B4', // Hot Pink
-        'primary-dark': '#FF1493', // Deep Pink
-        secondary: '#FFB6C1', // Light Pink
-        'secondary-dark': '#FF82A9', // Darker Light Pink
-        accent: '#FFC0CB', // Pink
-        'accent-dark': '#FF8DA1', // Darker Pink
-        background: '#FFF0F5', // Lavender Blush
-        success: '#4CAF50', // Green
-        warning: '#FF9800', // Orange
-        danger: '#F44336', // Red
-        info: '#2196F3', // Blue
+        primary: {
+          DEFAULT: '#ff6b9d',
+          dark: '#e6487d',
+          light: '#ffa0c0',
+        },
+        secondary: {
+          DEFAULT: '#9f75ff',
+          dark: '#7d4df1',
+          light: '#c4a9ff',
+        },
+        accent: {
+          DEFAULT: '#5acbfa',
+          dark: '#1eaaed',
+          light: '#98e1ff',
+        },
+        background: '#fff9fb',
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        heading: ['var(--font-playfair)', 'Playfair Display', 'serif'],
+        sans: ['DM Sans', 'sans-serif'],
+        heading: ['Poppins', 'sans-serif'],
       },
       borderRadius: {
-        'xl': '1rem',
-        '2xl': '1.5rem',
-        '3xl': '2rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
       },
       boxShadow: {
-        'soft': '0 4px 20px 0 rgba(0, 0, 0, 0.05)',
-        'card': '0 10px 30px 0 rgba(0, 0, 0, 0.05)',
-        'hover': '0 20px 40px 0 rgba(0, 0, 0, 0.1)',
+        'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 10px 10px -5px rgba(0, 0, 0, 0.02)',
+        'card': '0 0 25px rgba(0, 0, 0, 0.04)',
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

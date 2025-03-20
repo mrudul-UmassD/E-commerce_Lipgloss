@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gloss & Glam - Premium Teen Beauty Store</title>
+  
+  <!-- Style overrides to fix blue icons issue -->
+  <style>
+    /* AGGRESSIVE OVERRIDES FOR BLUE ICONS */
+    svg[fill="blue"],
+    svg[stroke="blue"],
+    svg[color="blue"],
+    svg.blue-icon,
+    .blue-icon svg,
+    svg[width="384"][height="512"],
+    svg[height="512"][width="384"],
+    svg[width="448"][height="512"],
+    svg[height="512"][width="448"],
+    svg[width="576"][height="512"],
+    svg[height="512"][width="576"] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+    
+    /* Target paths and groups within SVGs */
+    svg path[fill="#0000ff"],
+    svg path[fill="blue"],
+    svg path[stroke="#0000ff"],
+    svg path[stroke="blue"],
+    svg g[fill="#0000ff"],
+    svg g[fill="blue"],
+    svg g[stroke="#0000ff"],
+    svg g[stroke="blue"] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+    
+    /* Target possible containers of these icons */
+    div:has(> svg[fill="blue"]),
+    div:has(> svg[stroke="blue"]),
+    div:has(> svg[color="blue"]),
+    .icon-container,
+    .blue-icon-container,
+    .floating-icons,
+    .side-navigation,
+    .side-icons,
+    .nav-icons {
+      display: none !important;
+    }
+    
+    /* Fix mobile navigation display */
+    .mobile-nav-item {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      height: 100% !important;
+      transition: colors 0.2s !important;
+      padding: 0 0.5rem !important;
+    }
+    
+    .mobile-nav-container {
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      background-color: white !important;
+      border-top: 1px solid #f3f4f6 !important;
+      box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+      z-index: 9999 !important;
+      display: block !important;
+    }
+    
+    @media (min-width: 768px) {
+      .mobile-nav-container {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="__next"></div>
+  
+  <!-- This script adds the style overrides dynamically as a fallback -->
+  <script>
+    (function() {
+      // Create a style element
+      var style = document.createElement('style');
+      
+      // Add blue icon fix styles
+      style.textContent = `
+        /* Hide blue icons */
+        svg[fill="blue"],
+        svg[stroke="blue"],
+        svg[color="blue"],
+        svg.blue-icon,
+        .blue-icon svg,
+        svg path[fill="#0000ff"],
+        svg path[fill="blue"],
+        svg path[stroke="#0000ff"],
+        svg path[stroke="blue"],
+        svg g[fill="#0000ff"],
+        svg g[fill="blue"],
+        svg g[stroke="#0000ff"],
+        svg g[stroke="blue"] {
+          display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+        }
+      `;
+      
+      // Append to head
+      document.head.appendChild(style);
+      
+      // Monitor for blue icons and remove them
+      setInterval(function() {
+        var blueIcons = document.querySelectorAll('svg[fill="blue"], svg[stroke="blue"], svg path[fill="blue"], svg path[stroke="blue"]');
+        blueIcons.forEach(function(icon) {
+          icon.style.display = 'none';
+          icon.style.visibility = 'hidden';
+          icon.style.opacity = '0';
+        });
+      }, 500); // Check every 500ms
+    })();
+  </script>
+</body>
+</html> 
