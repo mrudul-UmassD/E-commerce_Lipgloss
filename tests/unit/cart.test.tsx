@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { useCartStore } from '@/store/cartStore'
 import CartPage from '@/app/cart/page'
+import { CartItem } from '@/types/cart'
 
 // Mock the cart store
 jest.mock('@/store/cartStore', () => ({
@@ -8,7 +9,8 @@ jest.mock('@/store/cartStore', () => ({
 }))
 
 describe('Cart Functionality', () => {
-  const mockItems = [
+  // Mock cart items
+  const mockItems: CartItem[] = [
     {
       id: '1',
       name: 'Strawberry Dreams Lip Gloss',
@@ -18,6 +20,7 @@ describe('Cart Functionality', () => {
     },
   ]
 
+  // Mock store functions
   const mockRemoveItem = jest.fn()
   const mockUpdateQuantity = jest.fn()
   const mockGetTotalPrice = jest.fn().mockReturnValue(25.98)
@@ -26,20 +29,20 @@ describe('Cart Functionality', () => {
     jest.clearAllMocks()
     
     // Mock the implementation for useCartStore
-    // This is the critical part that was causing the issue
-    // We need to make sure it returns the correct value for each selector
+    // Return the correct value for each selector function
     (useCartStore as jest.Mock).mockImplementation((selector) => {
-      // If the selector is a function (which is how zustand selectors work)
+      // When the component calls useCartStore((state) => state.something)
       if (typeof selector === 'function') {
-        // Create our mock state
-        const state = {
+        const mockState = {
           items: mockItems,
           removeItem: mockRemoveItem,
           updateQuantity: mockUpdateQuantity,
-          getTotalPrice: mockGetTotalPrice
+          getTotalPrice: mockGetTotalPrice,
+          getTotalItems: () => 2,
+          addItem: jest.fn(),
+          clearCart: jest.fn(),
         }
-        // Call the selector with our state
-        return selector(state)
+        return selector(mockState)
       }
     })
   })
@@ -47,6 +50,7 @@ describe('Cart Functionality', () => {
   it('renders cart items correctly', () => {
     render(<CartPage />)
     
+    // After the loading state disappears, the cart items should be visible
     expect(screen.getByText('Strawberry Dreams Lip Gloss')).toBeInTheDocument()
     expect(screen.getByText('$12.99')).toBeInTheDocument()
     expect(screen.getByText('Quantity: 2')).toBeInTheDocument()
@@ -74,13 +78,16 @@ describe('Cart Functionality', () => {
     // For this test, mock the store to return empty items
     (useCartStore as jest.Mock).mockImplementation((selector) => {
       if (typeof selector === 'function') {
-        const state = {
+        const emptyState = {
           items: [], // Empty cart
           removeItem: mockRemoveItem,
           updateQuantity: mockUpdateQuantity,
-          getTotalPrice: mockGetTotalPrice
+          getTotalPrice: () => 0,
+          getTotalItems: () => 0,
+          addItem: jest.fn(),
+          clearCart: jest.fn(),
         }
-        return selector(state)
+        return selector(emptyState)
       }
     })
 
