@@ -3,9 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 240, 245;
+  --foreground-rgb: 51, 51, 51;
+  --background-start-rgb: 255, 245, 250;
   --background-end-rgb: 255, 255, 255;
+  
+  /* Custom color palette */
+  --color-primary: 255, 105, 180; /* Hot Pink */
+  --color-secondary: 255, 182, 193; /* Light Pink */
+  --color-accent: 255, 20, 147; /* Deep Pink */
+  --color-background: 255, 240, 245; /* Lavender Blush */
+  --color-text: 51, 51, 51; /* Dark Gray */
 }
 
 body {
@@ -15,22 +22,91 @@ body {
     rgb(var(--background-start-rgb)),
     rgb(var(--background-end-rgb))
   );
+  min-height: 100vh;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-gray-800;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+  
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-white px-6 py-2 rounded-full hover:bg-opacity-90 transition-all duration-200;
+    @apply bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-center;
   }
   
   .btn-secondary {
-    @apply bg-secondary text-white px-6 py-2 rounded-full hover:bg-opacity-90 transition-all duration-200;
+    @apply bg-secondary text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-center;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary text-primary px-6 py-[10px] rounded-full font-semibold hover:bg-primary hover:text-white transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 text-center;
   }
 
   .card {
-    @apply bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-200;
+    @apply bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-all duration-300 border border-gray-100;
   }
 
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+    @apply w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200;
+  }
+  
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .nav-link {
+    @apply relative text-gray-600 hover:text-primary transition-colors duration-200 font-medium;
+  }
+  
+  .nav-link-active {
+    @apply text-primary font-semibold;
+  }
+  
+  .nav-link-active::after {
+    content: '';
+    @apply absolute bottom-[-4px] left-0 w-full h-[2px] bg-primary rounded-full;
+  }
+  
+  .product-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+  
+  .product-card {
+    @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300;
+  }
+  
+  .product-image-container {
+    @apply relative h-72 w-full overflow-hidden;
+  }
+  
+  .product-image {
+    @apply object-cover rounded-t-xl transition-transform duration-500 hover:scale-110;
+  }
+  
+  .section-title {
+    @apply text-center mb-12;
+  }
+  
+  .section-title h2 {
+    @apply text-3xl md:text-4xl font-bold mb-2 text-gray-800;
+  }
+  
+  .section-title p {
+    @apply text-gray-600 max-w-2xl mx-auto;
   }
 } 

@@ -32,7 +32,7 @@ A modern, responsive e-commerce web application built with Next.js, specifically
 1. Clone the repository:
 ```bash
 git clone https://github.com/mrudul-UmassD/E-commerce_Lipgloss.git
-cd lip-gloss-store
+
 ```
 
 2. Install dependencies:
