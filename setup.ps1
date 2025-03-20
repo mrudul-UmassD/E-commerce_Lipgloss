@@ -27,18 +27,27 @@ mkdir -p tests/e2e
 # Download sample images
 Write-Host "Downloading sample images..."
 $images = @(
-    "https://example.com/images/hero-bg.jpg",
-    "https://example.com/images/product1.jpg",
-    "https://example.com/images/product2.jpg",
-    "https://example.com/images/product3.jpg",
-    "https://example.com/images/product4.jpg",
-    "https://example.com/images/product5.jpg",
-    "https://example.com/images/product6.jpg"
+    "https://picsum.photos/800/600?random=1",
+    "https://picsum.photos/400/400?random=2",
+    "https://picsum.photos/400/400?random=3",
+    "https://picsum.photos/400/400?random=4",
+    "https://picsum.photos/400/400?random=5",
+    "https://picsum.photos/400/400?random=6",
+    "https://picsum.photos/400/400?random=7"
 )
 
-foreach ($image in $images) {
-    $fileName = $image.Split('/')[-1]
-    Invoke-WebRequest -Uri $image -OutFile "public/images/$fileName"
+$imageNames = @(
+    "hero-bg.jpg",
+    "product1.jpg",
+    "product2.jpg",
+    "product3.jpg",
+    "product4.jpg",
+    "product5.jpg",
+    "product6.jpg"
+)
+
+for ($i = 0; $i -lt $images.Length; $i++) {
+    Invoke-WebRequest -Uri $images[$i] -OutFile "public/images/$($imageNames[$i])"
 }
 
 # Start the development server
