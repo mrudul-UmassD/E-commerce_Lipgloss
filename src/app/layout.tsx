@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import MobileNav from '@/components/MobileNav'
+import NavStyles from '@/components/NavStyles'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,52 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <style dangerouslySetInnerHTML={{ __html: `
-          /* AGGRESSIVE OVERRIDES FOR BLUE ICONS */
-          svg[fill="blue"],
-          svg[stroke="blue"],
-          svg[color="blue"],
-          svg[width="384"][height="512"],
-          svg[height="512"][width="384"],
-          svg[width="448"][height="512"],
-          svg[height="512"][width="448"],
-          svg[width="576"][height="512"],
-          svg[height="512"][width="576"] {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-          }
-          
-          div:has(> svg[fill="blue"]),
-          div:has(> svg[stroke="blue"]),
-          div:has(> svg[color="blue"]),
-          div:has(> svg[width="384"][height="512"]),
-          div:has(> svg[height="512"][width="384"]),
-          div.icon-container,
-          div.blue-icon-container,
-          div.floating-icons,
-          div.side-navigation {
-            display: none !important;
-          }
-          
-          .mobile-nav-container {
-            display: flex !important;
-            position: fixed !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            z-index: 9999 !important;
-          }
-          
-          @media (min-width: 768px) {
-            .mobile-nav-container {
-              display: none !important;
-            }
-          }
-        ` }} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
       </head>
       <body className={inter.className}>
+        <NavStyles />
+        
         <div className="container-custom min-h-screen">
           <Navbar />
           <main className="flex-grow pb-24">
@@ -75,6 +35,20 @@ export default function RootLayout({
           <Footer />
           <MobileNav />
         </div>
+        
+        <script dangerouslySetInnerHTML={{ __html: `
+          function hideIcons() {
+            document.querySelectorAll('svg[width="384"][height="512"], svg[width="448"][height="512"], svg[width="576"][height="512"]')
+              .forEach(el => {
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+              });
+          }
+          
+          hideIcons();
+          
+          setInterval(hideIcons, 500);
+        `}} />
       </body>
     </html>
   )

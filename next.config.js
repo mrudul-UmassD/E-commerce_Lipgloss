@@ -1,9 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['framer-motion'],
   reactStrictMode: true,
+  transpilePackages: ['framer-motion'],
   images: {
-    domains: ['example.com', 'picsum.photos'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+    unoptimized: true,
   },
 }
 

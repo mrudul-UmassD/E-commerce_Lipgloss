@@ -1,10 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 import { HeartIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
-import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
+import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
 import { motion } from 'framer-motion'
 import { Product } from '@/types/product'
 
@@ -15,77 +14,87 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const [isWishlisted, setIsWishlisted] = useState(false)
-  const isBestseller = product.tags?.includes('bestseller')
-  const isNew = product.tags?.includes('new')
+  const [imageError, setImageError] = useState(false)
+
+  const toggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setIsWishlisted(!isWishlisted)
+  }
 
   return (
-    <motion.div
+    <motion.div 
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="product-card relative group"
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      viewport={{ once: true }}
+      className="rounded-xl overflow-hidden shadow-card bg-white"
     >
-      {/* Wishlist button */}
-      <button 
-        onClick={() => setIsWishlisted(!isWishlisted)}
-        className="absolute right-3 top-3 z-10 bg-white rounded-full p-1.5 shadow-md opacity-90 hover:opacity-100 transition-all"
-        aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-      >
-        {isWishlisted ? (
-          <HeartSolidIcon className="h-5 w-5 text-primary-dark" />
-        ) : (
-          <HeartIcon className="h-5 w-5 text-gray-600" />
+      <div className="relative">
+        {/* Product tags */}
+        {product.tags?.includes('bestseller') && (
+          <span className="product-tag bestseller">Bestseller</span>
         )}
-      </button>
-
-      <div className="product-image-container">
+        {product.tags?.includes('new') && (
+          <span className="product-tag new">New</span>
+        )}
+        
+        {/* Wishlist button */}
+        <button 
+          onClick={toggleWishlist}
+          className="absolute top-3 right-3 z-10 bg-white rounded-full p-2 shadow-sm"
+        >
+          {isWishlisted ? (
+            <HeartIconSolid className="w-5 h-5 text-primary" />
+          ) : (
+            <HeartIcon className="w-5 h-5 text-gray-600" />
+          )}
+        </button>
+        
+        {/* Product image or placeholder */}
         <Link href={`/products/${product.id}`}>
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            className="product-image"
-          />
-        </Link>
-        
-        {/* Product badges */}
-        {isBestseller && (
-          <span className="absolute top-3 left-3 bg-primary-dark text-white text-xs font-bold px-3 py-1 rounded-full">
-            Bestseller
-          </span>
-        )}
-        {isNew && !isBestseller && (
-          <span className="absolute top-3 left-3 bg-accent-dark text-white text-xs font-bold px-3 py-1 rounded-full">
-            New
-          </span>
-        )}
-      </div>
-
-      <div className="p-3">
-        <Link href={`/products/${product.id}`} className="block">
-          <h3 className="text-lg font-bold mt-2 mb-1 hover:text-primary-dark transition-colors">{product.name}</h3>
-        </Link>
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
-        
-        <div className="flex justify-between items-center">
-          <span className="text-lg font-bold text-primary-dark">
-            ${product.price.toFixed(2)}
-          </span>
-          
-          <div className="flex space-x-2">
-            <Link
-              href={`/products/${product.id}`}
-              className="btn-secondary text-sm px-3 py-1.5"
-            >
-              Details
-            </Link>
-            <button 
-              className="bg-primary text-white p-1.5 rounded-full hover:bg-primary-dark transition-colors"
-              aria-label="Add to cart"
-            >
-              <ShoppingBagIcon className="h-5 w-5" />
-            </button>
+          <div className="relative aspect-square overflow-hidden">
+            {imageError ? (
+              <div className="w-full h-full bg-gradient-to-r from-pink-100 to-purple-100 flex items-center justify-center">
+                <span className="text-primary-dark font-bold text-xl">{product.name}</span>
+              </div>
+            ) : (
+              <div 
+                className="w-full h-full bg-cover bg-center transform transition-transform duration-300 hover:scale-105"
+                style={{ 
+                  backgroundImage: `url(${product.image})`,
+                  backgroundPosition: 'center',
+                  backgroundSize: 'cover'
+                }}
+                onError={() => setImageError(true)}
+              />
+            )}
           </div>
+        </Link>
+      </div>
+      
+      <div className="p-4">
+        <div className="mb-3">
+          <h3 className="text-lg font-bold text-gray-800 mb-1 truncate">{product.name}</h3>
+          <p className="text-primary-dark font-semibold">${product.price.toFixed(2)}</p>
+        </div>
+        
+        <div className="text-sm text-gray-600 mb-4 line-clamp-2">
+          {product.description}
+        </div>
+        
+        <div className="flex space-x-2">
+          <Link 
+            href={`/products/${product.id}`}
+            className="btn-outline flex-1 py-2 text-sm"
+          >
+            Details
+          </Link>
+          <button 
+            className="btn-primary flex-1 py-2 text-sm flex items-center justify-center"
+          >
+            <ShoppingBagIcon className="w-4 h-4 mr-1" />
+            Add to Cart
+          </button>
         </div>
       </div>
     </motion.div>

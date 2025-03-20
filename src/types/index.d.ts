@@ -44,4 +44,104 @@ declare namespace JSX {
   interface IntrinsicElements {
     [elemName: string]: any;
   }
-} 
+}
+
+// Type definitions for the project
+
+// React
+declare namespace React {
+  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+    // Add any custom attributes that aren't in React's types
+    dangerouslySetInnerHTML?: {
+      __html: string;
+    };
+  }
+}
+
+// Next.js modules
+declare module 'next' {
+  export type Metadata = {
+    title?: string;
+    description?: string;
+    keywords?: string | string[];
+    [key: string]: any;
+  };
+}
+
+declare module 'next/font/google' {
+  type FontOptions = {
+    subsets?: string[];
+    weight?: string[];
+    variable?: string;
+    display?: 'auto' | 'block' | 'swap' | 'fallback' | 'optional';
+  };
+  
+  export function Inter(options: FontOptions): {
+    className: string;
+    variable?: string;
+    style: { fontFamily: string };
+  };
+  
+  export function Playfair_Display(options: FontOptions): {
+    className: string;
+    variable?: string;
+    style: { fontFamily: string };
+  };
+}
+
+declare module 'next/navigation' {
+  export function usePathname(): string;
+  export function useRouter(): {
+    push: (url: string) => void;
+    replace: (url: string) => void;
+    back: () => void;
+  };
+}
+
+// Heroicons
+declare module '@heroicons/react/24/outline' {
+  export const HomeIcon: React.FC<React.SVGProps<SVGSVGElement>>;
+  export const ShoppingBagIcon: React.FC<React.SVGProps<SVGSVGElement>>;
+  export const HeartIcon: React.FC<React.SVGProps<SVGSVGElement>>;
+  export const UserIcon: React.FC<React.SVGProps<SVGSVGElement>>;
+  export const MagnifyingGlassIcon: React.FC<React.SVGProps<SVGSVGElement>>;
+}
+
+declare module '@heroicons/react/24/solid' {
+  export const HeartIcon: React.FC<React.SVGProps<SVGSVGElement>>;
+  export const ShoppingBagIcon: React.FC<React.SVGProps<SVGSVGElement>>;
+}
+
+// Framer Motion
+declare module 'framer-motion' {
+  export const motion: {
+    [key: string]: any;
+  };
+}
+
+// Image types for handling errors and placeholders
+declare module 'next/image' {
+  export default function Image(props: ImageProps): JSX.Element;
+  
+  interface ImageProps {
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+    fill?: boolean;
+    className?: string;
+    priority?: boolean;
+    onError?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
+    [key: string]: any;
+  }
+}
+
+// Testing libraries
+declare module '@testing-library/react';
+declare module '@testing-library/jest-dom';
+declare module 'jest';
+
+// E2E testing
+declare module 'selenium-webdriver';
+declare module 'selenium-webdriver/chrome';
+declare module 'chromedriver'; 

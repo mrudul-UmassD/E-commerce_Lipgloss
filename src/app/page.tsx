@@ -1,17 +1,23 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import ProductCard from '@/components/ProductCard'
 import { Product } from '@/types/product'
+
+// Placeholder image component to avoid image loading errors
+const PlaceholderImage = ({ className, alt }: { className?: string, alt: string }) => (
+  <div className={`bg-gradient-to-r from-pink-100 to-purple-100 flex items-center justify-center ${className || 'w-full h-full'}`}>
+    <div className="text-primary-dark font-bold text-xl">{alt}</div>
+  </div>
+)
 
 const featuredProducts: Product[] = [
   {
     id: '1',
     name: 'Strawberry Dreams',
     price: 12.99,
-    image: '/images/product1.jpg',
+    image: '/placeholder-product.txt',
     description: 'Sweet strawberry flavor with a subtle shimmer',
     category: 'Fruity',
     tags: ['bestseller', 'shimmer'],
@@ -20,7 +26,7 @@ const featuredProducts: Product[] = [
     id: '2',
     name: 'Bubblegum Pop',
     price: 12.99,
-    image: '/images/product2.jpg',
+    image: '/placeholder-product.txt',
     description: 'Bubblegum scent with holographic glitter',
     category: 'Sweet',
     tags: ['new', 'glitter'],
@@ -29,7 +35,7 @@ const featuredProducts: Product[] = [
     id: '3',
     name: 'Cotton Candy Kiss',
     price: 12.99,
-    image: '/images/product3.jpg',
+    image: '/placeholder-product.txt',
     description: 'Cotton candy flavor with rainbow sparkles',
     category: 'Sweet',
     tags: ['bestseller', 'sparkle'],
@@ -59,46 +65,41 @@ const testimonials = [
     name: 'Emma S.',
     age: 16,
     text: 'I love how Gloss & Glam makes me feel confident. The Cotton Candy Kiss is my absolute favorite!',
-    image: '/images/testimonial1.jpg',
   },
   {
     name: 'Olivia K.',
     age: 15,
     text: 'These lip glosses are the best I\'ve ever tried. They\'re not sticky and last so long!',
-    image: '/images/testimonial2.jpg',
   },
 ]
 
 export default function Home() {
   return (
-    <div className="space-y-24">
+    <div className="space-y-16 max-w-full overflow-hidden">
       {/* Hero Section */}
-      <section className="relative h-[500px] md:h-[700px] flex items-center justify-center overflow-hidden rounded-3xl">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/hero-bg.jpg"
-            alt="Beauty background"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
+      <section className="relative h-[400px] md:h-[600px] flex items-center justify-center overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-pink-100 via-purple-100 to-pink-200">
+          {/* Using gradient instead of image */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-10">
+            <span className="text-8xl font-bold text-pink-500">Gloss & Glam</span>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/30 to-white/60" />
         </div>
         
-        <div className="relative z-10 text-center text-white px-4 max-w-4xl">
+        <div className="relative z-10 text-center px-4 max-w-4xl">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight"
+            className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-primary-dark"
           >
-            Express Yourself with <span className="text-secondary">Gloss & Glam</span>
+            Express Yourself with <span className="text-secondary-dark">Gloss & Glam</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl mb-10"
+            className="text-lg md:text-xl mb-8 text-gray-700"
           >
             Premium lip glosses designed for teens who want to shine
           </motion.p>
@@ -108,10 +109,10 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link href="/products" className="btn-primary text-lg px-8 py-4">
+            <Link href="/products" className="btn-primary text-lg px-8 py-3">
               Shop Collection
             </Link>
-            <Link href="/about" className="btn-outline text-white border-white text-lg px-8 py-4 hover:bg-white hover:text-primary-dark">
+            <Link href="/about" className="btn-outline text-lg px-8 py-3">
               Our Story
             </Link>
           </motion.div>
@@ -119,8 +120,8 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {benefits.map((benefit, index) => (
             <motion.div
               key={benefit.title}
@@ -128,10 +129,10 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white text-center p-8 rounded-2xl shadow-soft"
+              className="bg-white text-center p-6 rounded-2xl shadow-soft"
             >
               <div className="text-4xl mb-4">{benefit.icon}</div>
-              <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
+              <h3 className="text-xl font-bold mb-2 text-primary-dark">{benefit.title}</h3>
               <p className="text-gray-600">{benefit.description}</p>
             </motion.div>
           ))}
@@ -139,17 +140,17 @@ export default function Home() {
       </section>
 
       {/* Featured Products */}
-      <section className="py-12">
+      <section className="py-8">
         <div className="section-title">
           <h2>Bestselling Lip Gloss</h2>
           <p>Discover our most popular products loved by teens everywhere</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {featuredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        <div className="text-center mt-10">
+        <div className="text-center mt-8">
           <Link href="/products" className="btn-outline inline-block">
             View All Products
           </Link>
@@ -157,12 +158,12 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/10 rounded-2xl">
+      <section className="py-10 bg-gradient-to-r from-primary/5 to-secondary/10 rounded-2xl">
         <div className="section-title">
           <h2>What Teens Say</h2>
           <p>Real reviews from our young beauty enthusiasts</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.name}
@@ -170,29 +171,24 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white p-6 rounded-2xl shadow-soft flex gap-4"
+              className="bg-white p-5 rounded-2xl shadow-soft flex gap-4"
             >
               <div className="flex-shrink-0">
-                <div className="w-16 h-16 relative rounded-full overflow-hidden">
-                  <Image
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    fill
-                    className="object-cover"
-                  />
+                <div className="w-16 h-16 relative rounded-full overflow-hidden bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
+                  <span className="text-lg font-bold text-primary-dark">{testimonial.name.charAt(0)}</span>
                 </div>
               </div>
               <div>
-                <p className="text-gray-600 mb-4 italic">"{testimonial.text}"</p>
-                <p className="font-bold">{testimonial.name}, {testimonial.age}</p>
+                <p className="text-gray-600 mb-3 italic">"{testimonial.text}"</p>
+                <p className="font-bold text-primary-dark">{testimonial.name}, {testimonial.age}</p>
               </div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Instagram Feed Section */}
-      <section className="py-12">
+      {/* Instagram Feed Section - Using colored boxes instead of images */}
+      <section className="py-8">
         <div className="section-title">
           <h2>Follow Our Glam Journey</h2>
           <p>Join our community on Instagram @glossandglam</p>
@@ -206,12 +202,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="aspect-square relative block overflow-hidden rounded-2xl group"
             >
-              <Image
-                src={`/images/product${item}.jpg`}
-                alt="Instagram post"
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-              />
+              <div className={`absolute inset-0 bg-gradient-to-br ${getGradientByIndex(item)} transition-transform duration-500 group-hover:scale-110`}></div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
                 <span className="text-white text-sm">❤️ View on Instagram</span>
               </div>
@@ -221,14 +212,14 @@ export default function Home() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="relative py-16 px-4 rounded-3xl overflow-hidden">
-        <div className="absolute inset-0 bg-primary/10" />
-        <div className="relative max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Join the Glam Club</h2>
-          <p className="text-gray-600 mb-8">
+      <section className="relative py-12 px-4 rounded-3xl overflow-hidden mb-20">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10" />
+        <div className="relative max-w-xl mx-auto text-center">
+          <h2 className="text-2xl font-bold mb-4 text-primary-dark">Join the Glam Club</h2>
+          <p className="text-gray-600 mb-6">
             Subscribe to our newsletter for exclusive offers, beauty tips, and early access to new products!
           </p>
-          <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your email"
@@ -242,4 +233,18 @@ export default function Home() {
       </section>
     </div>
   )
+}
+
+// Helper function to get gradient colors for Instagram feed
+function getGradientByIndex(index: number): string {
+  const gradients = [
+    'from-pink-300 to-purple-300',
+    'from-secondary-light to-primary-light',
+    'from-primary to-secondary',
+    'from-pink-400 to-purple-400',
+    'from-secondary to-primary',
+    'from-primary-dark to-secondary-dark'
+  ];
+  
+  return gradients[index % gradients.length];
 } 

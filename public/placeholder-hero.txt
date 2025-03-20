@@ -1,0 +1,11 @@
+This is a placeholder for a hero image background. In a production environment, you would replace this with a real image file.
+
+Image dimensions: 1200x600px
+Format: JPG or WebP
+Recommended file size: <200KB
+
+Content suggestions:
+- Glamorous lip gloss product shots
+- Teen models using lip gloss
+- Colorful abstract backgrounds that complement the pink theme
+- Product flatlay with lip gloss and accessories 

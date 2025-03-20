@@ -1,0 +1,11 @@
+This is a placeholder for product images. In a production environment, you would replace this with real product photos.
+
+Image dimensions: 400x400px
+Format: JPG or WebP
+Recommended file size: <100KB
+
+Content suggestions:
+- Individual lip gloss product shots on white/transparent background
+- Close-up of lip gloss applicator tip
+- Texture shots showing the shimmer/glitter in the product
+- Color swatches of the lip gloss shade 

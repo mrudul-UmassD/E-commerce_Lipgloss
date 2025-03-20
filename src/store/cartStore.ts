@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { CartState, CartItem } from '@/types/cart'
 
-export const useCartStore = create<CartState>((set) => ({
+export const useCartStore = create<CartState>((set, get) => ({
   items: [],
   addItem: (item: CartItem) =>
     set((state) => {
@@ -28,4 +28,12 @@ export const useCartStore = create<CartState>((set) => ({
       ),
     })),
   clearCart: () => set({ items: [] }),
+  getTotalPrice: () => {
+    const { items } = get();
+    return items.reduce((total, item) => total + (item.price * item.quantity), 0);
+  },
+  getTotalItems: () => {
+    const { items } = get();
+    return items.reduce((total, item) => total + item.quantity, 0);
+  }
 })) 

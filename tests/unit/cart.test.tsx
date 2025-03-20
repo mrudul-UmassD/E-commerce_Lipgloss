@@ -1,9 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { useCartStore } from '@/store/cartStore'
+import CartPage from '@/app/cart/page'
 
 // Mock the cart store
 jest.mock('@/store/cartStore', () => ({
-  useCartStore: jest.fn(),
+  useCartStore: jest.fn()
 }))
 
 describe('Cart Functionality', () => {
@@ -19,21 +20,32 @@ describe('Cart Functionality', () => {
 
   const mockRemoveItem = jest.fn()
   const mockUpdateQuantity = jest.fn()
+  const mockGetTotalPrice = jest.fn().mockReturnValue(25.98)
 
   beforeEach(() => {
-    ;(useCartStore as jest.Mock).mockImplementation(() => ({
-      items: mockItems,
-      removeItem: mockRemoveItem,
-      updateQuantity: mockUpdateQuantity,
-    }))
-  })
-
-  afterEach(() => {
     jest.clearAllMocks()
+    
+    // Mock the implementation for useCartStore
+    // This is the critical part that was causing the issue
+    // We need to make sure it returns the correct value for each selector
+    (useCartStore as jest.Mock).mockImplementation((selector) => {
+      // If the selector is a function (which is how zustand selectors work)
+      if (typeof selector === 'function') {
+        // Create our mock state
+        const state = {
+          items: mockItems,
+          removeItem: mockRemoveItem,
+          updateQuantity: mockUpdateQuantity,
+          getTotalPrice: mockGetTotalPrice
+        }
+        // Call the selector with our state
+        return selector(state)
+      }
+    })
   })
 
   it('renders cart items correctly', () => {
-    render(<div>Cart Page</div>)
+    render(<CartPage />)
     
     expect(screen.getByText('Strawberry Dreams Lip Gloss')).toBeInTheDocument()
     expect(screen.getByText('$12.99')).toBeInTheDocument()
@@ -41,7 +53,7 @@ describe('Cart Functionality', () => {
   })
 
   it('calls removeItem when remove button is clicked', () => {
-    render(<div>Cart Page</div>)
+    render(<CartPage />)
     
     const removeButton = screen.getByText('Remove')
     fireEvent.click(removeButton)
@@ -50,7 +62,7 @@ describe('Cart Functionality', () => {
   })
 
   it('calls updateQuantity when quantity is changed', () => {
-    render(<div>Cart Page</div>)
+    render(<CartPage />)
     
     const quantitySelect = screen.getByRole('combobox')
     fireEvent.change(quantitySelect, { target: { value: '3' } })
@@ -59,13 +71,20 @@ describe('Cart Functionality', () => {
   })
 
   it('displays empty cart message when no items', () => {
-    ;(useCartStore as jest.Mock).mockImplementation(() => ({
-      items: [],
-      removeItem: mockRemoveItem,
-      updateQuantity: mockUpdateQuantity,
-    }))
+    // For this test, mock the store to return empty items
+    (useCartStore as jest.Mock).mockImplementation((selector) => {
+      if (typeof selector === 'function') {
+        const state = {
+          items: [], // Empty cart
+          removeItem: mockRemoveItem,
+          updateQuantity: mockUpdateQuantity,
+          getTotalPrice: mockGetTotalPrice
+        }
+        return selector(state)
+      }
+    })
 
-    render(<div>Cart Page</div>)
+    render(<CartPage />)
     
     expect(screen.getByText('Your Cart is Empty')).toBeInTheDocument()
     expect(screen.getByText('Add some products to your cart!')).toBeInTheDocument()
